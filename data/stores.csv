@@ -1,0 +1,24 @@
+store_id,store_name,location,region,country
+STR_000,Acme Retail Online,Global Fulfillment Warehouse,Online,Online
+STR_001,Acme Retail New York,556 Oak Ave,NY,United States
+STR_002,Acme Retail Los Angeles,1226 Ridge Rd,CA,United States
+STR_003,Acme Retail Chicago,1014 Elm St,IL,United States
+STR_004,Acme Retail Houston,519 Baker St,TX,United States
+STR_005,Acme Retail Miami,456 Station Rd,FL,United States
+STR_006,Acme Retail Seattle,1828 Pine Rd,WA,United States
+STR_007,Acme Retail Boston,222 Main St,MA,United States
+STR_008,Acme Retail London,995 Hillcrest Dr,England,United Kingdom
+STR_009,Acme Retail Manchester,2169 Green Ln,England,United Kingdom
+STR_010,Acme Retail Edinburgh,208 High St,Scotland,United Kingdom
+STR_011,Acme Retail Toronto,914 Baker St,ON,Canada
+STR_012,Acme Retail Vancouver,1818 Hillcrest Dr,BC,Canada
+STR_013,Acme Retail Montreal,1939 Station Rd,QC,Canada
+STR_014,Acme Retail Berlin,1239 Maple St,Berlin,Germany
+STR_015,Acme Retail Munich,753 4th Ave,Bavaria,Germany
+STR_016,Acme Retail Hamburg,1493 Highland Ave,Hamburg,Germany
+STR_017,Acme Retail Paris,736 River Rd,Île-de-France,France
+STR_018,Acme Retail Lyon,1478 Washington St,Auvergne-Rhône-Alpes,France
+STR_019,Acme Retail Tokyo,479 1st Ave,Tokyo,Japan
+STR_020,Acme Retail Osaka,496 Union St,Osaka,Japan
+STR_021,Acme Retail Sydney,1508 Green Ln,NSW,Australia
+STR_022,Acme Retail Melbourne,1183 Pine Rd,VIC,Australia
