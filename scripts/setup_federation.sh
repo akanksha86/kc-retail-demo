@@ -113,11 +113,11 @@ gcloud secrets add-iam-policy-binding "$SECRET_NAME" \
     --member="serviceAccount:$BIGLAKE_SA" \
     --role="roles/secretmanager.secretAccessor"
 
-echo "Granting Storage Object Viewer role to BigLake Service Account for Iceberg data access..."
+echo "Granting Storage Object Admin role to BigLake Service Account for Iceberg data read/write access..."
 gcloud storage buckets add-iam-policy-binding gs://kc-retail-demo-warehouse \
     --project="$PROJECT_ID" \
     --member="serviceAccount:$BIGLAKE_SA" \
-    --role="roles/storage.objectViewer"
+    --role="roles/storage.objectAdmin"
 
 # Reset config override for safety
 gcloud config unset api_endpoint_overrides/secretmanager

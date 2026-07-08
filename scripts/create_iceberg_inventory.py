@@ -59,6 +59,7 @@ def main():
         .tableProperty("delta.columnMapping.mode", "name") \
         .tableProperty("delta.universalFormat.enabledFormats", "iceberg") \
         .tableProperty("delta.enableIcebergCompatV2", "true") \
+        .tableProperty("gcp.biglake.bigquery-dml.enabled", "true") \
         .using("delta") \
         .createOrReplace()
 
