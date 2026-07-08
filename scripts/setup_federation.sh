@@ -25,6 +25,13 @@ gcloud services enable biglake.googleapis.com secretmanager.googleapis.com --pro
 # 2. Get Databricks OAuth Credentials
 echo "Please provide your Databricks Service Principal Credentials."
 echo "These credentials will be stored securely in GCP Secret Manager."
+echo ""
+echo "CRITICAL: Ensure your Service Principal has the following privileges in Databricks:"
+echo " - USE CATALOG on the 'acme_catalog' catalog"
+echo " - USE SCHEMA on the 'raw_data' schema"
+echo " - SELECT on all tables in the 'raw_data' schema"
+echo "If these are missing, BigQuery will not be able to sync the catalog!"
+echo ""
 read -p "Enter Databricks Client ID: " CLIENT_ID
 read -sp "Enter Databricks Client Secret: " CLIENT_SECRET
 echo ""
