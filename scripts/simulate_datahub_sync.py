@@ -4,8 +4,8 @@ import os
 print("=================================================")
 print("Simulating DataHub to Dataplex Synchronization...")
 print("=================================================")
-print("In a production environment, this script runs via Cloud Run / Cloud Functions,")
-print("triggered by DataHub Webhooks on metadata changes.")
+print("In a production environment, this is handled entirely by DataHub Cloud's")
+print("native 'Knowledge Catalog Metadata Sync' Automation.")
 print("It uses the google-cloud-dataplex API to upsert Custom Aspects.")
 print("=================================================\n")
 

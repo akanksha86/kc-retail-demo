@@ -172,10 +172,10 @@ SELECT * FROM `kc-retail-demo.raw_retail_data_euw1.salesforce_service_cases` LIM
 
 While Dataplex natively crawls GCP resources, many enterprises use tools like DataHub to capture metadata from on-premise databases (Postgres, Oracle) and transformation tools (dbt, Airflow). 
 
-To bring this external metadata into Knowledge Catalog, we establish an event-driven sync. DataHub webhooks trigger a Cloud Function that maps DataHub entities into **Dataplex Custom Aspects**.
+To bring this external metadata into Knowledge Catalog, DataHub Cloud provides a native **Knowledge Catalog Metadata Sync** automation. This automation natively maps DataHub Tags, Glossary Terms, and Structured Properties directly into **Dataplex Custom Aspects** and **Business Glossary Terms**.
 
 ### Setup Instructions
-Because we don't have a live DataHub instance, we simulate this integration using a mock JSON export (`data/datahub_export.json`) that contains upstream lineage and data quality tiers.
+Because we don't have a live DataHub Cloud instance, we simulate this native automation using a mock JSON export (`data/datahub_export.json`) that contains upstream lineage and data quality tiers.
 
 Run the simulation script to see how this metadata is mapped and applied to our BigQuery Dataplex Entries:
 ```bash
