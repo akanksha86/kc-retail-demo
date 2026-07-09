@@ -167,3 +167,18 @@ Once completed, you can query the CRM data seamlessly in BigQuery alongside your
 ```sql
 SELECT * FROM `kc-retail-demo.raw_retail_data_euw1.salesforce_service_cases` LIMIT 10;
 ```
+
+## Phase 5: Third-Party Catalog Synchronization (DataHub)
+
+While Dataplex natively crawls GCP resources, many enterprises use tools like DataHub to capture metadata from on-premise databases (Postgres, Oracle) and transformation tools (dbt, Airflow). 
+
+To bring this external metadata into Knowledge Catalog, we establish an event-driven sync. DataHub webhooks trigger a Cloud Function that maps DataHub entities into **Dataplex Custom Aspects**.
+
+### Setup Instructions
+Because we don't have a live DataHub instance, we simulate this integration using a mock JSON export (`data/datahub_export.json`) that contains upstream lineage and data quality tiers.
+
+Run the simulation script to see how this metadata is mapped and applied to our BigQuery Dataplex Entries:
+```bash
+python3 scripts/simulate_datahub_sync.py
+```
+This script demonstrates the `google-cloud-dataplex` API calls required to attach these Custom Aspects, uniting the enterprise graph.

@@ -32,9 +32,10 @@ The Knowledge Catalog serves as a dynamic, always-on universal context engine de
   - **The Native Approach:** Configuring direct, zero-copy metadata federation to Salesforce Data Cloud via BigQuery integration, allowing direct analytical access to CRM data (like service cases, campaigns, and loyalty points) without fragile ETL pipelines.
   - **Demo Simulation (External Tables):** Because we lack a live Salesforce environment, we simulate this federation by generating synthetic CRM Service Cases and mounting them as BigQuery External Tables over Cloud Storage. This accurately mirrors how zero-copy tables manifest in the Lakehouse runtime.
   - **Unified Semantic Mapping:** Exposing Salesforce operational ontologies (e.g., `case_id`, `resolution_time`) to the central Knowledge Catalog. This allows AI agents to cross-reference customer service interactions with unstructured product manuals and core inventory datasets in a single "Golden Query."
-- **Third-Party Catalog Synchronization:**
-  - Establishing automated, continuous metadata synchronization pipelines with legacy enterprise data catalogs (Atlan, Collibra, Datahub, Ab Initio, and Anomalo).
-  - Bi-directional mapping frameworks to sync standardized enterprise definitions, catalog tags, and custom data-quality annotations seamlessly between existing 3P tools and the Knowledge Catalog runtime.
+- **Third-Party Catalog Synchronization (DataHub):**
+  - **The Integration Pattern:** While Google Cloud natively crawls GCP assets, many enterprises use catalogs like DataHub to capture on-premise systems (Kafka, Postgres), transformation pipelines (dbt, Airflow), and data quality assertions (Great Expectations). We establish an event-driven sync using DataHub's webhooks/API and Dataplex Custom Aspects.
+  - **Enriching Knowledge Catalog:** By ingesting DataHub's graph into Dataplex, we bring rich, cross-platform lineage and steward-defined business metadata directly into the GCP runtime. 
+  - **Demo Simulation (Custom Aspects):** We simulate a DataHub sync by taking a mock DataHub JSON export (representing upstream lineage from an on-prem ERP and quality tiers) and programmatically attaching it to our BigQuery tables via the Dataplex Catalog API as Custom Aspects.
 - **Managed Connectivity for Legacy Estates:**
   - Deploying no-code/low-code metadata connectivity pipelines using both GCP-native and partner-certified metadata connectors.
   - Automating metadata, structure tracking, and system query log ingestion for on-premise and 3P relational engines (Oracle, PostgreSQL, SQL Server, MySQL, and Amazon Redshift).

@@ -1,0 +1,35 @@
+{
+  "export_version": "v1.2",
+  "source_system": "DataHub",
+  "exported_at": "2026-07-09T10:00:00Z",
+  "entities": [
+    {
+      "target_bq_table": "kc-retail-demo.raw_retail_data_euw1.products",
+      "datahub_urn": "urn:li:dataset:(urn:li:dataPlatform:postgres,acme_legacy_erp.public.inventory,PROD)",
+      "upstream_lineage": [
+        "urn:li:dataset:(urn:li:dataPlatform:kafka,acme.erp.inventory.events,PROD)"
+      ],
+      "data_quality": {
+        "tier": "GOLD",
+        "last_dbt_test_run": "PASSED",
+        "completeness_score": 99.8
+      },
+      "steward": "jane.doe@acme.com",
+      "domain": "Supply Chain"
+    },
+    {
+      "target_bq_table": "kc-retail-demo.raw_retail_data_euw1.customers",
+      "datahub_urn": "urn:li:dataset:(urn:li:dataPlatform:snowflake,acme_cdp.public.users,PROD)",
+      "upstream_lineage": [
+        "urn:li:dataset:(urn:li:dataPlatform:segment,users,PROD)"
+      ],
+      "data_quality": {
+        "tier": "SILVER",
+        "last_dbt_test_run": "PASSED",
+        "completeness_score": 95.2
+      },
+      "steward": "john.smith@acme.com",
+      "domain": "Customer 360"
+    }
+  ]
+}
