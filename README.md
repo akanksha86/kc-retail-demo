@@ -127,12 +127,3 @@ SELECT * FROM `kc-retail-demo`.acme_catalog_fed.raw_data.inventory LIMIT 10;
 ```
 *(Ensure the BigQuery query is run in the same location as your federated catalog setup.)*
 
----
-
-## Known Issues: Databricks API Deprecation
-
-**Important Note:** As of late 2024, Databricks has officially deprecated the `iceberg/v1/` REST API endpoint in favor of a newer `iceberg-rest/v1/` standard. Currently, Google Cloud BigLake Federation relies on the older `iceberg/v1/` endpoint to fetch metadata.
-
-Because of this version mismatch, BigLake can successfully authenticate and fetch the Databricks schemas, but the subsequent request to fetch tables silently fails. This results in the federated catalog showing 0 tables in BigQuery.
-
-Until Google Cloud updates BigLake to support the `iceberg-rest/v1/` standard, Databricks Unity Catalog Iceberg federation via BigLake may be temporarily broken. In the meantime, you can directly map GCS Delta tables to BigQuery bypassing Unity Catalog entirely.
