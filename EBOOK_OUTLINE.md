@@ -28,9 +28,10 @@ The Knowledge Catalog serves as a dynamic, always-on universal context engine de
   - Implementing Lakehouse Catalog Federation via the native Iceberg REST Catalog (IRC) interface.
   - Automating technical metadata pipelines (table names, column types, and partition schemas) natively from cross-cloud lakehouses, including Databricks Unity Catalog, AWS Glue Data Catalog, and Snowflake Horizon IRC.
   - Configuring BigQuery Omni Integration to anchor and centralize business semantics, logical lineage, and "Golden Queries" for data physically residing in AWS S3 or Azure without data movement.
-- **Zero-Copy SaaS Application Federation:**
-  - Configuring Google Cloud Lakehouse runtime catalog integrations for zero-copy metadata federation to enterprise SaaS engines including Salesforce Data360, SAP, Palantir, ServiceNow, and Workday.
-  - Mapping and exposing external operational ontologies, transaction contexts, and application-level semantic layers to the central Knowledge Catalog graph without moving any underlying source data.
+- **Zero-Copy SaaS Application Federation (Salesforce):**
+  - **The Native Approach:** Configuring direct, zero-copy metadata federation to Salesforce Data Cloud via BigQuery integration, allowing direct analytical access to CRM data (like service cases, campaigns, and loyalty points) without fragile ETL pipelines.
+  - **Demo Simulation (External Tables):** Because we lack a live Salesforce environment, we simulate this federation by generating synthetic CRM Service Cases and mounting them as BigQuery External Tables over Cloud Storage. This accurately mirrors how zero-copy tables manifest in the Lakehouse runtime.
+  - **Unified Semantic Mapping:** Exposing Salesforce operational ontologies (e.g., `case_id`, `resolution_time`) to the central Knowledge Catalog. This allows AI agents to cross-reference customer service interactions with unstructured product manuals and core inventory datasets in a single "Golden Query."
 - **Third-Party Catalog Synchronization:**
   - Establishing automated, continuous metadata synchronization pipelines with legacy enterprise data catalogs (Atlan, Collibra, Datahub, Ab Initio, and Anomalo).
   - Bi-directional mapping frameworks to sync standardized enterprise definitions, catalog tags, and custom data-quality annotations seamlessly between existing 3P tools and the Knowledge Catalog runtime.

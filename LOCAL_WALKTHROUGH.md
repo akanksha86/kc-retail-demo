@@ -148,3 +148,22 @@ WHERE store_id = 'store_999';
 ```
 
 *(Note: The BigLake service account requires the `roles/storage.objectAdmin` or `roles/storage.objectUser` role on your GCS bucket to perform writes, which is configured in the federation setup script).*
+
+## Phase 4: Zero-Copy SaaS Federation (Salesforce)
+
+To demonstrate how the Knowledge Catalog integrates CRM data directly alongside your unstructured AI insights and multi-cloud Iceberg catalogs, we simulate a zero-copy federation with Salesforce.
+
+In a production environment, this is achieved natively via **Salesforce Data Cloud's direct BigQuery integration** or **BigQuery Omni**, which projects Salesforce CRM data into BigQuery without ETL pipelines. 
+
+Because we lack a live Salesforce Data Cloud environment, we simulate this federation by generating a synthetic `salesforce_service_cases.csv` and creating a BigQuery External Table over it in Google Cloud Storage.
+
+### Setup Instructions
+Run the setup script to generate the synthetic data, upload it to GCS, and create the federated table:
+```bash
+./scripts/setup_salesforce_federation.sh
+```
+
+Once completed, you can query the CRM data seamlessly in BigQuery alongside your other tables:
+```sql
+SELECT * FROM `kc-retail-demo.raw_retail_data_euw1.salesforce_service_cases` LIMIT 10;
+```
