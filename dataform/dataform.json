@@ -1,0 +1,7 @@
+{
+  "defaultSchema": "raw_retail_data_euw1",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "kc-retail-demo",
+  "defaultLocation": "europe-west1"
+}

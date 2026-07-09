@@ -76,22 +76,28 @@ echo "Setup Complete!"
 echo ""
 echo "Try running this SQL query in BigQuery to extract metadata from PDFs and join it with structured data:"
 echo ""
-echo "SELECT "
-echo "  structured.product_name,"
-echo "  structured.unit_price,"
-echo "  extracted_data.ml_generate_content_result as llm_extraction"
-echo "FROM ML.GENERATE_CONTENT("
-echo "  MODEL \`${PROJECT_ID}.${DATASET_ID}.gemini_2_5_pro\`,"
-echo "  ("
-echo "    SELECT uri AS prompt, data FROM \`${PROJECT_ID}.${DATASET_ID}.unstructured_docs\`"
-echo "    WHERE uri LIKE '%manual%'"
-echo "  ),"
-echo "  STRUCT("
-echo "    'Extract the exact SKU and summarize the maintenance instructions in 1 sentence. Output in JSON format with keys: \"sku\" and \"maintenance\".' AS system_instruction,"
-echo "    TRUE AS flatten_json_output"
-echo "  )"
-echo ") AS extracted_data"
-echo "INNER JOIN \`${PROJECT_ID}.${DATASET_ID}.products\` AS structured"
-echo "  ON JSON_VALUE(extracted_data.ml_generate_content_result, '$.sku') = structured.sku"
-echo "LIMIT 10;"
+bq query --use_legacy_sql=false \
+"CREATE OR REPLACE VIEW \`${PROJECT_ID}.${DATASET_ID}.extracted_manual_insights\` AS
+WITH raw_extracted AS (
+  SELECT *
+  FROM ML.GENERATE_TEXT(
+    MODEL \`${PROJECT_ID}.${DATASET_ID}.gemini_2_5_pro\`,
+    (
+      SELECT *
+      FROM \`${PROJECT_ID}.${DATASET_ID}.unstructured_docs\`
+      WHERE uri LIKE '%manual%'
+    ),
+    STRUCT(
+      'Extract the exact SKU and summarize the maintenance instructions in 1 sentence. Output ONLY a valid, raw JSON object with keys: \"sku\" and \"maintenance\". Do NOT use markdown formatting or backticks. Ensure maximum accuracy and no markdown.' AS prompt,
+      TRUE AS flatten_json_output
+    )
+  )
+)
+SELECT
+  uri,
+  JSON_VALUE(REPLACE(REPLACE(ml_generate_text_llm_result, '\`\`\`json\\n', ''), '\`\`\`', ''), '$.sku') as sku,
+  JSON_VALUE(REPLACE(REPLACE(ml_generate_text_llm_result, '\`\`\`json\\n', ''), '\`\`\`', ''), '$.maintenance') as maintenance_summary,
+  CURRENT_TIMESTAMP() as extracted_at
+FROM raw_extracted;"
+
 echo "================================================="

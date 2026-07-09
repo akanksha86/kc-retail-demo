@@ -1,0 +1,29 @@
+config {
+  type: "incremental",
+  schema: "raw_retail_data_euw1",
+  name: "extracted_manual_insights",
+  description: "Materialized AI extractions from PDF manuals",
+  uniqueKey: ["uri"]
+}
+
+WITH raw_extracted AS (
+  SELECT * FROM ML.GENERATE_TEXT(
+    MODEL \`kc-retail-demo.raw_retail_data_euw1.gemini_2_5_pro\`,
+    (
+      SELECT *
+      FROM \`kc-retail-demo.raw_retail_data_euw1.unstructured_docs\`
+      WHERE uri LIKE '%manual%'
+      \${when(incremental(), \`AND updated > (SELECT MAX(extracted_at) FROM \${self()})\`)}
+    ),
+    STRUCT(
+      'Extract the exact SKU and summarize the maintenance instructions in 1 sentence. Output ONLY a valid, raw JSON object with keys: "sku" and "maintenance". Do NOT use markdown formatting or backticks. Ensure maximum accuracy and no markdown.' AS prompt,
+      TRUE AS flatten_json_output
+    )
+  )
+)
+SELECT
+  uri,
+  JSON_VALUE(REPLACE(REPLACE(ml_generate_text_llm_result, '\`\`\`json\\n', ''), '\`\`\`', ''), '$.sku') as sku,
+  JSON_VALUE(REPLACE(REPLACE(ml_generate_text_llm_result, '\`\`\`json\\n', ''), '\`\`\`', ''), '$.maintenance') as maintenance_summary,
+  CURRENT_TIMESTAMP() as extracted_at
+FROM raw_extracted

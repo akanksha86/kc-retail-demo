@@ -1,0 +1,23 @@
+config {
+  type: "view",
+  schema: "raw_retail_data_euw1",
+  name: "unified_product_insights_materialized",
+  description: "Unified view of structured, iceberg, and pre-extracted unstructured insights"
+}
+
+SELECT
+  structured.sku,
+  structured.product_id,
+  structured.product_name,
+  structured.unit_price,
+  structured.category,
+  structured.brand,
+  inv.stock_quantity,
+  inv.store_id,
+  inv.last_updated,
+  extracted.maintenance_summary
+FROM `kc-retail-demo.raw_retail_data_euw1.products` AS structured
+LEFT JOIN ${ref("extracted_manual_insights")} AS extracted
+  ON structured.sku = extracted.sku
+LEFT JOIN `kc-retail-demo.acme_catalog_fed.raw_data.inventory` AS inv
+  ON structured.product_id = inv.product_id
