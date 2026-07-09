@@ -90,7 +90,6 @@ def main():
             output = run_cmd(f'bq ls --location={REGION} {PROJECT_ID}:{CATALOG_NAME}', capture_output=True)
             if "Not found" in output or output.strip() == "":
                 print("\nWARNING: No schemas found in the federated catalog.")
-                print("The Databricks Iceberg API might still be blocking table retrieval.")
             else:
                 print("\nSUCCESS! Found the following federated schemas:")
                 print(output)
