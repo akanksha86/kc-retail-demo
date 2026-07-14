@@ -39,6 +39,10 @@ The Knowledge Catalog serves as a dynamic, always-on universal context engine de
 - **Managed Connectivity for Legacy Estates:**
   - Deploying no-code/low-code metadata connectivity pipelines using both GCP-native and partner-certified metadata connectors.
   - Automating metadata, structure tracking, and system query log ingestion for on-premise and 3P relational engines (Oracle, PostgreSQL, SQL Server, MySQL, and Amazon Redshift).
+  - **Demo Simulation (PostgreSQL):** We demonstrate this legacy integration by generating synthetic supplier data and mounting it as an external table representing an on-premise PostgreSQL database federated into BigQuery via Cloud SQL federation or Datastream.
+- **Native AI Model Cataloging (Vertex AI Integration):**
+  - Extracting live context from machine learning infrastructure, automatically cataloging Vertex AI models, datasets, endpoints, and feature groups.
+  - **Demo Simulation:** We create a real BigQuery ML K-Means clustering model for customer segmentation. Because BQML natively integrates with Vertex AI, the model is automatically registered into the Vertex AI Model Registry, allowing Knowledge Catalog to instantly surface model metadata, hyper-parameters, and evaluation metrics alongside core operational data.
 - **BI & Semantic Ingestion:**
   - Extracting look-forward lineage, explores, and logical views natively from Looker Core architectures.
   - Programmatically translating foundational LookML business logic and BigQuery native database metrics into reusable, agent-discoverable endpoints to scale unified semantic context.

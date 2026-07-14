@@ -182,3 +182,28 @@ Run the simulation script to see how this metadata is mapped and applied to our 
 python3 scripts/simulate_datahub_sync.py
 ```
 This script demonstrates the `google-cloud-dataplex` API calls required to attach these Custom Aspects, uniting the enterprise graph.
+
+## Phase 6: Managed Connectivity for Legacy Databases (PostgreSQL)
+
+To simulate federating data from a legacy operational database (e.g., an on-premise PostgreSQL instance connected via Datastream or Cloud SQL federation), we have generated a synthetic `suppliers` dataset.
+
+Instead of writing a complex ETL pipeline, we mount this dataset as an external table in BigQuery, simulating the zero-copy and continuous replication features of GCP's managed connectivity.
+
+### Setup Instructions
+Run the setup script to upload the suppliers data and configure the BigQuery external table:
+```bash
+./scripts/setup_postgres_federation.sh
+```
+This federated database table can now be governed, profiled, and joined seamlessly with our Lakehouse tables.
+
+## Phase 7: Vertex AI Integration (Native Cataloging)
+
+Knowledge Catalog natively discovers and catalogs machine learning assets from the Vertex AI Model Registry. To demonstrate this, we can train a real BigQuery ML model that automatically registers itself into Vertex AI.
+
+### Setup Instructions
+We will train a **K-Means Customer Segmentation** model in BigQuery using our synthetic customer, order, and transaction data.
+Run the training script:
+```bash
+./scripts/train_vertex_ai_model.sh
+```
+Because the script uses the `model_registry='vertex_ai'` option in BigQuery ML, this model instantly appears in the Vertex AI Model Registry and is subsequently cataloged by Dataplex Knowledge Catalog, complete with hyperparameters and evaluation metrics.
