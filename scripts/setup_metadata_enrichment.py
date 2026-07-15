@@ -87,17 +87,30 @@ def setup_aspect_types(token):
     create_aspect_type(token, "retail-contains-pii", "Contains PII (Retail)", "Flags datasets containing PII.", pii_fields)
 
 def lookup_entry_name(token, bq_resource):
-    """Looks up the correct Dataplex Entry name for a given BigQuery resource."""
-    url = f"https://datacatalog.googleapis.com/v1/entries:lookup?linkedResource={bq_resource}"
+    """Looks up the correct Dataplex Entry name using Dataplex Search API (v2 ecosystem)."""
+    table_name = bq_resource.split("/")[-1]
+    dataset_name = bq_resource.split("/")[-3]
+    
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}:searchEntries?query=name:{table_name}"
     headers = {
         "Authorization": f"Bearer {token}",
         "x-goog-user-project": PROJECT_ID
     }
     response = requests.get(url, headers=headers)
+    
     if response.status_code == 200:
-        return response.json().get("name")
+        results = response.json().get("results", [])
+        for r in results:
+            entry_name = r.get("dataplexEntry", {}).get("name", "")
+            if not entry_name:
+                entry_name = r.get("relativeResourceName", "")
+            if dataset_name in entry_name and table_name in entry_name:
+                return entry_name
+                
+        print(f"❌ Entry not found in Dataplex Search results for {bq_resource}")
+        return None
     else:
-        print(f"❌ Data Catalog Lookup failed for {bq_resource}. Status: {response.status_code}")
+        print(f"❌ Dataplex Search Lookup failed. Status: {response.status_code}")
         print(response.text)
         return None
 
