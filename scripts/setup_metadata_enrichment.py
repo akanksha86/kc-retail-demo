@@ -87,13 +87,13 @@ def setup_aspect_types(token):
 
 def lookup_entry_name(token, bq_resource):
     """Looks up the correct Dataplex Entry name for a given BigQuery resource."""
-    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entries:lookup?entry={bq_resource}"
+    url = f"https://datacatalog.googleapis.com/v1/entries:lookup?linkedResource={bq_resource}"
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json().get("name")
     else:
-        print(f"❌ Lookup failed for {bq_resource}. Status: {response.status_code}")
+        print(f"❌ Data Catalog Lookup failed for {bq_resource}. Status: {response.status_code}")
         print(response.text)
         return None
 
