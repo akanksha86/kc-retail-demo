@@ -27,7 +27,8 @@ def create_aspect_type(token, aspect_type_id, display_name, description, fields)
     
     headers = {
         "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "x-goog-user-project": PROJECT_ID
     }
     
     payload = {
@@ -88,7 +89,10 @@ def setup_aspect_types(token):
 def lookup_entry_name(token, bq_resource):
     """Looks up the correct Dataplex Entry name for a given BigQuery resource."""
     url = f"https://datacatalog.googleapis.com/v1/entries:lookup?linkedResource={bq_resource}"
-    headers = {"Authorization": f"Bearer {token}"}
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "x-goog-user-project": PROJECT_ID
+    }
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json().get("name")
@@ -118,7 +122,8 @@ def attach_aspect_to_entry(token, entry_name, aspect_type, aspect_payload):
     url = f"https://dataplex.googleapis.com/v1/{entry_name}?updateMask=aspects"
     headers = {
         "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "x-goog-user-project": PROJECT_ID
     }
     
     response = requests.patch(url, headers=headers, json=payload)
@@ -145,7 +150,8 @@ def create_data_quality_scan(token, scan_id, target_table, rules_payload):
     url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/dataScans?dataScanId={scan_id}"
     headers = {
         "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "x-goog-user-project": PROJECT_ID
     }
     
     response = requests.post(url, headers=headers, json=payload)
