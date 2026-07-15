@@ -103,9 +103,18 @@ def attach_aspect_to_entry(token, entry_name, aspect_type, aspect_payload):
         }
     }
     
-    print(f"API CALL: PATCH https://dataplex.googleapis.com/v1/{entry_name}")
-    print(f"Payload: {json.dumps(payload, indent=2)}")
-    print("✅ [Simulation] Aspect successfully attached.")
+    url = f"https://dataplex.googleapis.com/v1/{entry_name}?updateMask=aspects"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.patch(url, headers=headers, json=payload)
+    if response.status_code == 200:
+        print(f"✅ Aspect '{aspect_type}' successfully attached.")
+    else:
+        print(f"❌ Failed to attach aspect. Status: {response.status_code}")
+        print(response.text)
 
 def simulate_create_data_quality_scan(token, scan_id, target_table):
     """Simulates creating a Dataplex DataQualityScan for Retail."""
@@ -114,7 +123,7 @@ def simulate_create_data_quality_scan(token, scan_id, target_table):
     payload = {
         "displayName": f"AutoDQ for {target_table}",
         "data": {
-            "resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data/tables/{target_table}"
+            "resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/{target_table}"
         },
         "dataQualitySpec": {
             "rules": [
@@ -138,9 +147,20 @@ def simulate_create_data_quality_scan(token, scan_id, target_table):
         }
     }
     
-    print(f"API CALL: POST https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/dataScans?dataScanId={scan_id}")
-    print(f"Payload: {json.dumps(payload, indent=2)}")
-    print("✅ [Simulation] DataQualityScan created.")
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/dataScans?dataScanId={scan_id}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code == 200 or response.status_code == 201:
+        print(f"✅ DataQualityScan '{scan_id}' created successfully.")
+    elif response.status_code == 409:
+        print(f"ℹ️ DataQualityScan '{scan_id}' already exists.")
+    else:
+        print(f"❌ Failed to create DataQualityScan. Status: {response.status_code}")
+        print(response.text)
 
 def simulate_create_data_product(token, product_id):
     """Simulates creating a Data Product using Dataplex Catalog."""
@@ -162,17 +182,28 @@ def simulate_create_data_product(token, product_id):
                 "aspectType": "projects/global/locations/global/aspectTypes/linked_resources",
                 "data": {
                     "links": [
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data/tables/customers"},
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data/tables/orders"}
+                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/customers"},
+                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/orders"}
                     ]
                 }
             }
         }
     }
     
-    print(f"API CALL: POST https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}")
-    print(f"Payload: {json.dumps(payload, indent=2)}")
-    print("✅ [Simulation] Data Product 'Acme Customer 360 Insights' created.")
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code == 200 or response.status_code == 201:
+        print(f"✅ Data Product '{product_id}' created successfully.")
+    elif response.status_code == 409:
+        print(f"ℹ️ Data Product '{product_id}' already exists.")
+    else:
+        print(f"❌ Failed to create Data Product. Status: {response.status_code}")
+        print(response.text)
 
 def main():
     print("=================================================")
@@ -183,26 +214,26 @@ def main():
     # 1. Create Aspect Types (Actual API call)
     setup_aspect_types(token)
     
-    # 2. Attach Aspects to Tables (Simulation printout to avoid needing hardcoded system entry names)
+    # 2. Attach Aspects to Tables
     attach_aspect_to_entry(
         token, 
-        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data.customers",
+        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data_euw1.customers",
         aspect_type="retail-data-owner",
         aspect_payload={"owner_email": "customer-success@acme.com", "department": "Customer Success"}
     )
     
     attach_aspect_to_entry(
         token, 
-        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data.customers",
+        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data_euw1.customers",
         aspect_type="retail-contains-pii",
         aspect_payload={"has_pii": "Yes"}
     )
     
-    # 3. Create Data Quality Scan (Simulation)
+    # 3. Create Data Quality Scan
     simulate_create_data_quality_scan(token, "inventory-dq-scan", "inventory")
     simulate_create_data_quality_scan(token, "products-dq-scan", "products")
     
-    # 4. Create Data Product (Simulation)
+    # 4. Create Data Product
     simulate_create_data_product(token, "acme_customer_360_insights")
     
     print("\n=================================================")
