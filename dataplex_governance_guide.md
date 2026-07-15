@@ -46,35 +46,39 @@ Dataplex AutoDQ now supports advanced reusability and machine learning features.
 ### A. Rule Templates & Glossary-Based Association (Highlight Feature)
 Instead of creating isolated rules for each table, build **Rule Templates** and associate them directly with your Business Glossary terms. Any column tagged with that term automatically inherits the rule!
 
-* **Rule: Positive Stock Validation (Range Expectation)**
+* **Rule: Positive Stock Validation**
   * *Glossary Term*: **Current Stock Level**
+  * *Dataplex Rule Type*: **Range**
+  * *Min Value*: `0` (Leaves Max Value blank)
   * *Description*: Stock quantity cannot be negative.
-  * *Template Expression*: `${data()} < 0` (Identifies invalid rows)
 
-* **Rule: Price Validation (Range Expectation)**
+* **Rule: Price Validation**
   * *Glossary Term*: **Standard Unit Price**
+  * *Dataplex Rule Type*: **Range**
+  * *Min Value*: `0.01`
   * *Description*: Unit price must be strictly greater than 0.
-  * *Template Expression*: `${data()} <= 0` (Identifies invalid rows)
 
-* **Rule: Valid Email Format (Regex Expectation)**
+* **Rule: Valid Email Format**
   * *Glossary Term*: **Contact Email Address**
+  * *Dataplex Rule Type*: **Regex**
+  * *Regex Pattern*: `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
   * *Description*: Email must follow standard format.
-  * *Template Expression*: `NOT REGEXP_CONTAINS(${data()}, r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')`
 
-* **Rule: Valid Retail Branch (Set Expectation)**
+* **Rule: Valid Retail Branch**
   * *Glossary Term*: **Retail Branch Name**
+  * *Dataplex Rule Type*: **Set**
+  * *Allowed Values*: `London Flagship`, `Paris Central`, `Berlin Hub`, `Madrid Store`
   * *Description*: Branch name must belong to the active list of physical stores.
-  * *Template Expression*: `${data()} NOT IN ('London Flagship', 'Paris Central', 'Berlin Hub', 'Madrid Store')`
 
-* **Rule: Unique Product Identifier (Uniqueness Expectation)**
+* **Rule: Unique Product Identifier**
   * *Glossary Term*: **Stock Keeping Unit (SKU)**
+  * *Dataplex Rule Type*: **Uniqueness**
   * *Description*: Every SKU must be unique across the product catalog.
-  * *Dimension*: Uniqueness
 
-* **Rule: Mandatory Field (Non-Null Expectation)**
+* **Rule: Mandatory Field**
   * *Glossary Term*: **Stock Keeping Unit (SKU)**
+  * *Dataplex Rule Type*: **Non-null**
   * *Description*: A product must always have a registered SKU.
-  * *Dimension*: Completeness
 
 ### B. AI-Generated Data Quality Rules
 Leverage Dataplex's generative AI to automatically suggest rules based on table context. For instance, scanning the `customers` table might prompt the AI to suggest bounds for the `customer_segment` (e.g., standardizing tier strings).
