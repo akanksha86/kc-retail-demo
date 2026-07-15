@@ -86,8 +86,8 @@ def setup_aspect_types(token):
     create_aspect_type(token, "retail-contains-pii", "Contains PII (Retail)", "Flags datasets containing PII.", pii_fields)
 
 def lookup_entry_name(token, bq_resource):
-    """Looks up the correct Dataplex Entry name using Dataplex V2 lookupEntry API."""
-    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}:lookupEntry?name={bq_resource}"
+    """Looks up the correct Dataplex Entry name using the canonical Data Catalog lookup API."""
+    url = f"https://datacatalog.googleapis.com/v1/entries:lookup?linkedResource={bq_resource}"
     headers = {
         "Authorization": f"Bearer {token}"
     }
@@ -96,7 +96,7 @@ def lookup_entry_name(token, bq_resource):
     if response.status_code == 200:
         return response.json().get("name")
     else:
-        print(f"❌ Dataplex lookupEntry failed for {bq_resource}. Status: {response.status_code}")
+        print(f"❌ Data Catalog lookup failed for {bq_resource}. Status: {response.status_code}")
         print(response.text)
         return None
 
