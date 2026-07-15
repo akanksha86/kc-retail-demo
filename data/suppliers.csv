@@ -1,0 +1,101 @@
+supplier_id,supplier_name,contact_email,city,rating
+SUP-001,Supplier 1 Corp,contact@supplier1.com,London,2.6
+SUP-002,Supplier 2 Corp,contact@supplier2.com,Paris,3.1
+SUP-003,Supplier 3 Corp,contact@supplier3.com,Tokyo,4.3
+SUP-004,Supplier 4 Corp,contact@supplier4.com,London,4.0
+SUP-005,Supplier 5 Corp,contact@supplier5.com,New York,2.6
+SUP-006,Supplier 6 Corp,contact@supplier6.com,Berlin,3.1
+SUP-007,Supplier 7 Corp,contact@supplier7.com,New York,3.9
+SUP-008,Supplier 8 Corp,contact@supplier8.com,Mumbai,3.1
+SUP-009,Supplier 9 Corp,contact@supplier9.com,Paris,4.5
+SUP-010,Supplier 10 Corp,contact@supplier10.com,New York,4.4
+SUP-011,Supplier 11 Corp,contact@supplier11.com,Tokyo,4.2
+SUP-012,Supplier 12 Corp,contact@supplier12.com,Sydney,3.2
+SUP-013,Supplier 13 Corp,contact@supplier13.com,Berlin,4.9
+SUP-014,Supplier 14 Corp,contact@supplier14.com,Sydney,2.8
+SUP-015,Supplier 15 Corp,contact@supplier15.com,Mumbai,2.7
+SUP-016,Supplier 16 Corp,contact@supplier16.com,Sydney,4.0
+SUP-017,Supplier 17 Corp,contact@supplier17.com,New York,4.3
+SUP-018,Supplier 18 Corp,contact@supplier18.com,London,4.9
+SUP-019,Supplier 19 Corp,contact@supplier19.com,Mumbai,2.7
+SUP-020,Supplier 20 Corp,contact@supplier20.com,Paris,4.6
+SUP-021,Supplier 21 Corp,contact@supplier21.com,Sydney,3.9
+SUP-022,Supplier 22 Corp,contact@supplier22.com,London,2.6
+SUP-023,Supplier 23 Corp,contact@supplier23.com,Berlin,4.4
+SUP-024,Supplier 24 Corp,contact@supplier24.com,London,4.6
+SUP-025,Supplier 25 Corp,contact@supplier25.com,London,3.5
+SUP-026,Supplier 26 Corp,contact@supplier26.com,Sao Paulo,4.1
+SUP-027,Supplier 27 Corp,contact@supplier27.com,Sydney,2.9
+SUP-028,Supplier 28 Corp,contact@supplier28.com,Sydney,3.0
+SUP-029,Supplier 29 Corp,contact@supplier29.com,Paris,4.3
+SUP-030,Supplier 30 Corp,contact@supplier30.com,London,4.0
+SUP-031,Supplier 31 Corp,contact@supplier31.com,Tokyo,3.8
+SUP-032,Supplier 32 Corp,contact@supplier32.com,Berlin,2.9
+SUP-033,Supplier 33 Corp,contact@supplier33.com,Mumbai,3.2
+SUP-034,Supplier 34 Corp,contact@supplier34.com,Berlin,4.2
+SUP-035,Supplier 35 Corp,contact@supplier35.com,New York,3.1
+SUP-036,Supplier 36 Corp,contact@supplier36.com,New York,4.5
+SUP-037,Supplier 37 Corp,contact@supplier37.com,Mumbai,3.2
+SUP-038,Supplier 38 Corp,contact@supplier38.com,Berlin,4.8
+SUP-039,Supplier 39 Corp,contact@supplier39.com,Sydney,3.0
+SUP-040,Supplier 40 Corp,contact@supplier40.com,Sao Paulo,3.5
+SUP-041,Supplier 41 Corp,contact@supplier41.com,Sao Paulo,2.9
+SUP-042,Supplier 42 Corp,contact@supplier42.com,Tokyo,3.1
+SUP-043,Supplier 43 Corp,contact@supplier43.com,Paris,4.4
+SUP-044,Supplier 44 Corp,contact@supplier44.com,Mumbai,4.7
+SUP-045,Supplier 45 Corp,contact@supplier45.com,Mumbai,3.4
+SUP-046,Supplier 46 Corp,contact@supplier46.com,Tokyo,3.8
+SUP-047,Supplier 47 Corp,contact@supplier47.com,London,4.4
+SUP-048,Supplier 48 Corp,contact@supplier48.com,London,2.9
+SUP-049,Supplier 49 Corp,contact@supplier49.com,Tokyo,4.5
+SUP-050,Supplier 50 Corp,contact@supplier50.com,Mumbai,4.0
+SUP-051,Supplier 51 Corp,contact@supplier51.com,Mumbai,3.5
+SUP-052,Supplier 52 Corp,contact@supplier52.com,Sao Paulo,3.8
+SUP-053,Supplier 53 Corp,contact@supplier53.com,New York,4.2
+SUP-054,Supplier 54 Corp,contact@supplier54.com,London,4.2
+SUP-055,Supplier 55 Corp,contact@supplier55.com,Paris,4.4
+SUP-056,Supplier 56 Corp,contact@supplier56.com,Sydney,2.8
+SUP-057,Supplier 57 Corp,contact@supplier57.com,Mumbai,2.9
+SUP-058,Supplier 58 Corp,contact@supplier58.com,New York,4.9
+SUP-059,Supplier 59 Corp,contact@supplier59.com,Paris,4.9
+SUP-060,Supplier 60 Corp,contact@supplier60.com,Tokyo,3.8
+SUP-061,Supplier 61 Corp,contact@supplier61.com,London,4.7
+SUP-062,Supplier 62 Corp,contact@supplier62.com,Paris,4.6
+SUP-063,Supplier 63 Corp,contact@supplier63.com,Berlin,2.9
+SUP-064,Supplier 64 Corp,contact@supplier64.com,Tokyo,3.8
+SUP-065,Supplier 65 Corp,contact@supplier65.com,New York,4.0
+SUP-066,Supplier 66 Corp,contact@supplier66.com,Sao Paulo,2.5
+SUP-067,Supplier 67 Corp,contact@supplier67.com,Sydney,4.7
+SUP-068,Supplier 68 Corp,contact@supplier68.com,Paris,3.1
+SUP-069,Supplier 69 Corp,contact@supplier69.com,Berlin,4.7
+SUP-070,Supplier 70 Corp,contact@supplier70.com,London,2.7
+SUP-071,Supplier 71 Corp,contact@supplier71.com,Sao Paulo,4.5
+SUP-072,Supplier 72 Corp,contact@supplier72.com,Tokyo,2.8
+SUP-073,Supplier 73 Corp,contact@supplier73.com,Sao Paulo,4.9
+SUP-074,Supplier 74 Corp,contact@supplier74.com,Tokyo,3.2
+SUP-075,Supplier 75 Corp,contact@supplier75.com,Mumbai,4.9
+SUP-076,Supplier 76 Corp,contact@supplier76.com,Berlin,4.3
+SUP-077,Supplier 77 Corp,contact@supplier77.com,Mumbai,5.0
+SUP-078,Supplier 78 Corp,contact@supplier78.com,Sydney,3.6
+SUP-079,Supplier 79 Corp,contact@supplier79.com,Sao Paulo,2.8
+SUP-080,Supplier 80 Corp,contact@supplier80.com,Berlin,2.7
+SUP-081,Supplier 81 Corp,contact@supplier81.com,New York,4.0
+SUP-082,Supplier 82 Corp,contact@supplier82.com,Berlin,4.0
+SUP-083,Supplier 83 Corp,contact@supplier83.com,New York,2.7
+SUP-084,Supplier 84 Corp,contact@supplier84.com,New York,3.1
+SUP-085,Supplier 85 Corp,contact@supplier85.com,New York,4.6
+SUP-086,Supplier 86 Corp,contact@supplier86.com,London,3.8
+SUP-087,Supplier 87 Corp,contact@supplier87.com,Paris,4.2
+SUP-088,Supplier 88 Corp,contact@supplier88.com,Berlin,3.8
+SUP-089,Supplier 89 Corp,contact@supplier89.com,Sao Paulo,3.1
+SUP-090,Supplier 90 Corp,contact@supplier90.com,Sao Paulo,4.5
+SUP-091,Supplier 91 Corp,contact@supplier91.com,Berlin,2.7
+SUP-092,Supplier 92 Corp,contact@supplier92.com,Mumbai,3.4
+SUP-093,Supplier 93 Corp,contact@supplier93.com,Mumbai,3.7
+SUP-094,Supplier 94 Corp,contact@supplier94.com,New York,4.2
+SUP-095,Supplier 95 Corp,contact@supplier95.com,London,2.7
+SUP-096,Supplier 96 Corp,contact@supplier96.com,Sydney,4.5
+SUP-097,Supplier 97 Corp,contact@supplier97.com,London,3.1
+SUP-098,Supplier 98 Corp,contact@supplier98.com,Berlin,3.8
+SUP-099,Supplier 99 Corp,contact@supplier99.com,Tokyo,3.6
+SUP-100,Supplier 100 Corp,contact@supplier100.com,Paris,3.7

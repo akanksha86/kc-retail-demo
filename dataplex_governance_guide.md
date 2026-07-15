@@ -26,7 +26,7 @@ This guide outlines the data governance structure, manual metadata mappings, rec
 | :--- | :--- | :--- | :--- |
 | **`customer_360_view`** | `retail-data-owner` | `marketing-analytics@acme.com` | Inherits from underlying columns |
 | | `retail-contains-pii` | `True` | |
-| **`real_time_inventory_view`** | `retail-data-owner` | `supply-chain@acme.com` | Inherits from underlying columns |
+| **`unified_inventory_view`** | `retail-data-owner` | `supply-chain@acme.com` | Inherits from underlying columns |
 | | `retail-contains-pii` | `False` | |
 
 ---
@@ -35,7 +35,7 @@ This guide outlines the data governance structure, manual metadata mappings, rec
 
 **How should federated Databricks Iceberg inventory data be integrated with native BigQuery order data?**
 * **Via Zero-Copy Logical Views.** The core transaction tables (`orders` and `order_items`) reside natively in BigQuery, while the `inventory` dataset is managed by Databricks Unity Catalog as an Apache Iceberg table on Google Cloud Storage. Moving data back and forth for every query is fragile and expensive.
-* **Best Practice**: Create a unified **BigQuery View** (e.g., `real_time_stock_availability`) that performs a live `JOIN` between the native BigQuery `order_items` table and the federated Databricks Iceberg `inventory` table (accessed via BigLake). This allows the Conversational Agent to seamlessly query current stock availability against recent sales trends in a single "Golden Query" without any ETL data movement.
+* **Best Practice**: Create a unified **BigQuery View** (e.g., `unified_inventory_view`) that performs a live `JOIN` between the native BigQuery `products` table and the federated Databricks Iceberg `inventory` table (accessed via BigLake). This allows the Conversational Agent to seamlessly query current stock availability without any ETL data movement.
 
 ---
 
