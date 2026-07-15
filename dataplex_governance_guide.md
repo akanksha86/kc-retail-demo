@@ -31,11 +31,11 @@ This guide outlines the data governance structure, manual metadata mappings, rec
 
 ---
 
-## 2. Architecture Recommendation: Real-Time POS Data Integration
+## 2. Architecture Recommendation: Cross-Cloud Lakehouse Federation
 
-**How should streaming Point-of-Sale (POS) transactions be integrated with historical orders and inventory?**
-* **Via Materialized Views.** The main `orders` and `order_items` tables often serve as large historical repositories. Injecting high-velocity streaming POS data directly into static batch tables can cause performance and cost issues. 
-* **Best Practice**: Create a **BigQuery View** (or Materialized View) that performs a `UNION ALL` between the historical `orders` table and a real-time `streaming_pos_transactions` table. This ensures the Conversational Agent can instantly query the latest sales and inventory deductions alongside historical trends without degrading database performance.
+**How should federated Databricks Iceberg inventory data be integrated with native BigQuery order data?**
+* **Via Zero-Copy Logical Views.** The core transaction tables (`orders` and `order_items`) reside natively in BigQuery, while the `inventory` dataset is managed by Databricks Unity Catalog as an Apache Iceberg table on Google Cloud Storage. Moving data back and forth for every query is fragile and expensive.
+* **Best Practice**: Create a unified **BigQuery View** (e.g., `real_time_stock_availability`) that performs a live `JOIN` between the native BigQuery `order_items` table and the federated Databricks Iceberg `inventory` table (accessed via BigLake). This allows the Conversational Agent to seamlessly query current stock availability against recent sales trends in a single "Golden Query" without any ETL data movement.
 
 ---
 
