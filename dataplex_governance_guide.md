@@ -48,36 +48,38 @@ Instead of creating isolated rules for each table, build **Rule Templates** and 
 
 * **Rule: Positive Stock Validation**
   * *Glossary Term*: **Current Stock Level**
-  * *Dataplex Rule Type*: **Range**
-  * *Min Value*: `0` (Leaves Max Value blank)
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM ${data()} WHERE ${column()} < 0`
   * *Description*: Stock quantity cannot be negative.
 
 * **Rule: Price Validation**
   * *Glossary Term*: **Standard Unit Price**
-  * *Dataplex Rule Type*: **Range**
-  * *Min Value*: `0.01`
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM ${data()} WHERE ${column()} <= 0`
   * *Description*: Unit price must be strictly greater than 0.
 
 * **Rule: Valid Email Format**
   * *Glossary Term*: **Contact Email Address**
-  * *Dataplex Rule Type*: **Regex**
-  * *Regex Pattern*: `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM ${data()} WHERE NOT REGEXP_CONTAINS(${column()}, r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')`
   * *Description*: Email must follow standard format.
 
 * **Rule: Valid Retail Branch**
   * *Glossary Term*: **Retail Branch Name**
-  * *Dataplex Rule Type*: **Set**
-  * *Allowed Values*: `London Flagship`, `Paris Central`, `Berlin Hub`, `Madrid Store`
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM ${data()} WHERE ${column()} NOT IN ('London Flagship', 'Paris Central', 'Berlin Hub', 'Madrid Store')`
   * *Description*: Branch name must belong to the active list of physical stores.
 
 * **Rule: Unique Product Identifier**
   * *Glossary Term*: **Stock Keeping Unit (SKU)**
-  * *Dataplex Rule Type*: **Uniqueness**
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM (SELECT ${column()}, COUNT(*) as cnt FROM ${data()} GROUP BY ${column()}) WHERE cnt > 1`
   * *Description*: Every SKU must be unique across the product catalog.
 
 * **Rule: Mandatory Field**
   * *Glossary Term*: **Stock Keeping Unit (SKU)**
-  * *Dataplex Rule Type*: **Non-null**
+  * *Dataplex Rule Type*: **Custom SQL Statement**
+  * *SQL Expression*: `SELECT * FROM ${data()} WHERE ${column()} IS NULL`
   * *Description*: A product must always have a registered SKU.
 
 ### B. AI-Generated Data Quality Rules
