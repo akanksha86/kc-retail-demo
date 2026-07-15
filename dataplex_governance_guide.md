@@ -46,20 +46,35 @@ Dataplex AutoDQ now supports advanced reusability and machine learning features.
 ### A. Rule Templates & Glossary-Based Association (Highlight Feature)
 Instead of creating isolated rules for each table, build **Rule Templates** and associate them directly with your Business Glossary terms. Any column tagged with that term automatically inherits the rule!
 
-* **Rule: Positive Stock Validation**
+* **Rule: Positive Stock Validation (Range Expectation)**
   * *Glossary Term*: **Current Stock Level**
   * *Description*: Stock quantity cannot be negative.
   * *Template Expression*: `${data()} < 0` (Identifies invalid rows)
 
-* **Rule: Price Validation**
+* **Rule: Price Validation (Range Expectation)**
   * *Glossary Term*: **Standard Unit Price**
   * *Description*: Unit price must be strictly greater than 0.
   * *Template Expression*: `${data()} <= 0` (Identifies invalid rows)
 
-* **Rule: Valid Email Format**
+* **Rule: Valid Email Format (Regex Expectation)**
   * *Glossary Term*: **Contact Email Address**
   * *Description*: Email must follow standard format.
   * *Template Expression*: `NOT REGEXP_CONTAINS(${data()}, r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')`
+
+* **Rule: Valid Retail Branch (Set Expectation)**
+  * *Glossary Term*: **Retail Branch Name**
+  * *Description*: Branch name must belong to the active list of physical stores.
+  * *Template Expression*: `${data()} NOT IN ('London Flagship', 'Paris Central', 'Berlin Hub', 'Madrid Store')`
+
+* **Rule: Unique Product Identifier (Uniqueness Expectation)**
+  * *Glossary Term*: **Stock Keeping Unit (SKU)**
+  * *Description*: Every SKU must be unique across the product catalog.
+  * *Dimension*: Uniqueness
+
+* **Rule: Mandatory Field (Non-Null Expectation)**
+  * *Glossary Term*: **Stock Keeping Unit (SKU)**
+  * *Description*: A product must always have a registered SKU.
+  * *Dimension*: Completeness
 
 ### B. AI-Generated Data Quality Rules
 Leverage Dataplex's generative AI to automatically suggest rules based on table context. For instance, scanning the `customers` table might prompt the AI to suggest bounds for the `customer_segment` (e.g., standardizing tier strings).
