@@ -173,37 +173,6 @@ def create_entry_group(token, group_id, display_name):
         print(f"❌ Failed to create Entry Group. Status: {response.status_code}")
         print(response.text)
 
-def create_data_product(token, product_id):
-    """Creates a Data Product using Dataplex Catalog."""
-    print(f"\n--- Creating Data Product: {product_id} ---")
-    
-    # In Dataplex v1, Data Products are often represented as custom entries in an EntryGroup
-    payload = {
-        "entryType": "projects/global/locations/global/entryTypes/dataProduct",
-        "name": f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries/{product_id}",
-        "aspects": {
-            f"{PROJECT_ID}.{LOCATION}.retail-data-owner": {
-                "aspectType": f"projects/{PROJECT_ID}/locations/{LOCATION}/aspectTypes/retail-data-owner",
-                "data": {
-                    "owner_email": "marketing-analytics@acme.com",
-                    "department": "Marketing"
-                }
-            },
-            "global.global.linked_resources": {
-                "aspectType": "projects/global/locations/global/aspectTypes/linked_resources",
-                "data": {
-                    "links": [
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/customers"},
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/orders"}
-                    ]
-                }
-            }
-        }
-    }
-    
-    print(f"API CALL: POST https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}")
-    print(f"Payload: {json.dumps(payload, indent=2)}")
-    print("✅ [Simulation] Data Product 'Acme Customer 360 Insights' created.")
 
 def main():
     print("=================================================")
@@ -270,9 +239,6 @@ def main():
         }
     ]
     create_data_quality_scan(token, "products-dq-scan", "products", products_rules)
-    
-    # 4. Create Data Product
-    create_data_product(token, "acme_customer_360_insights")
     
     print("\n=================================================")
     print("Metadata Enrichment Scripts Completed.")
