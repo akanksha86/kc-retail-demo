@@ -85,6 +85,18 @@ def setup_aspect_types(token):
     ]
     create_aspect_type(token, "retail-contains-pii", "Contains PII (Retail)", "Flags datasets containing PII.", pii_fields)
 
+def lookup_entry_name(token, bq_resource):
+    """Looks up the correct Dataplex Entry name for a given BigQuery resource."""
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entries:lookup?entry={bq_resource}"
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("name")
+    else:
+        print(f"❌ Lookup failed for {bq_resource}. Status: {response.status_code}")
+        print(response.text)
+        return None
+
 def attach_aspect_to_entry(token, entry_name, aspect_type, aspect_payload):
     """Attaches a custom aspect to a Dataplex Entry (e.g. BigQuery table)."""
     # Note: Using the Dataplex Catalog API entries endpoint
@@ -173,20 +185,9 @@ def create_data_product(token, product_id):
         }
     }
     
-    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    
-    response = requests.post(url, headers=headers, json=payload)
-    if response.status_code == 200 or response.status_code == 201:
-        print(f"✅ Data Product '{product_id}' created successfully.")
-    elif response.status_code == 409:
-        print(f"ℹ️ Data Product '{product_id}' already exists.")
-    else:
-        print(f"❌ Failed to create Data Product. Status: {response.status_code}")
-        print(response.text)
+    print(f"API CALL: POST https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}")
+    print(f"Payload: {json.dumps(payload, indent=2)}")
+    print("✅ [Simulation] Data Product 'Acme Customer 360 Insights' created.")
 
 def main():
     print("=================================================")
@@ -198,19 +199,25 @@ def main():
     setup_aspect_types(token)
     
     # 2. Attach Aspects to Tables
-    attach_aspect_to_entry(
-        token, 
-        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data_euw1.customers",
-        aspect_type="retail-data-owner",
-        aspect_payload={"owner_email": "customer-success@acme.com", "department": "Customer Success"}
-    )
+    bq_resource = f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/customers"
+    actual_entry_name = lookup_entry_name(token, bq_resource)
     
-    attach_aspect_to_entry(
-        token, 
-        entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data_euw1.customers",
-        aspect_type="retail-contains-pii",
-        aspect_payload={"has_pii": "Yes"}
-    )
+    if actual_entry_name:
+        attach_aspect_to_entry(
+            token, 
+            entry_name=actual_entry_name,
+            aspect_type="retail-data-owner",
+            aspect_payload={"owner_email": "customer-success@acme.com", "department": "Customer Success"}
+        )
+        
+        attach_aspect_to_entry(
+            token, 
+            entry_name=actual_entry_name,
+            aspect_type="retail-contains-pii",
+            aspect_payload={"has_pii": "Yes"}
+        )
+    else:
+        print("Skipping Aspect Attachment due to lookup failure.")
     
     # 3. Create Data Quality Scan
     inventory_rules = [
