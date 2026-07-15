@@ -34,6 +34,7 @@ def create_aspect_type(token, aspect_type_id, display_name, description, fields)
         "displayName": display_name,
         "description": description,
         "metadataTemplate": {
+            "name": aspect_type_id,
             "type": "record",
             "recordFields": fields
         }
@@ -75,10 +76,10 @@ def setup_aspect_types(token):
     pii_fields = [
         {
             "name": "has_pii",
-            "type": "BOOLEAN",
+            "type": "STRING",
             "index": 1,
             "annotations": {
-                "description": "Indicates if the dataset contains Personally Identifiable Information"
+                "description": "Indicates if the dataset contains Personally Identifiable Information (Yes/No)"
             }
         }
     ]
@@ -194,7 +195,7 @@ def main():
         token, 
         entry_name=f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/@bigquery/entries/raw_retail_data.customers",
         aspect_type="retail-contains-pii",
-        aspect_payload={"has_pii": True}
+        aspect_payload={"has_pii": "Yes"}
     )
     
     # 3. Create Data Quality Scan (Simulation)
