@@ -10,13 +10,13 @@ This guide outlines the data governance structure, manual metadata mappings, rec
 ### Core Tables
 | BigQuery Table | Custom Aspect Type to Attach | Data to enter in UI | Glossary Terms (Column Level) |
 | :--- | :--- | :--- | :--- |
-| **`customers`** | `retail-data-owner` | `customer-success@acme.com` | `loyalty_score` -> **Customer Loyalty Index** <br> `email` -> **Contact Email Address** |
+| **`customers`** | `retail-data-owner` | `customer-success@acme.com` | `customer_segment` -> **Customer Loyalty Index** <br> `email` -> **Contact Email Address** |
 | | `retail-contains-pii` | `True` | |
 | **`orders`** | `retail-data-owner` | `sales-ops@acme.com` | `total_amount` -> **Total Order Revenue** |
 | | `retail-contains-pii` | `True` | |
 | **`products`** | `retail-data-owner` | `merchandising@acme.com` | `unit_price` -> **Standard Unit Price** <br> `sku` -> **Stock Keeping Unit (SKU)** |
 | | `retail-contains-pii` | `False` | |
-| **`inventory`** | `retail-data-owner` | `supply-chain@acme.com` | `stock_quantity` -> **Current Stock Level** <br> `last_updated` -> **Inventory Snapshot Time** |
+| **`inventory`** | `retail-data-owner` | `supply-chain@acme.com` | `stock_level` -> **Current Stock Level** <br> `last_updated` -> **Inventory Snapshot Time** |
 | | `retail-contains-pii` | `False` | |
 | **`stores`** | `retail-data-owner` | `retail-ops@acme.com` | `store_name` -> **Retail Branch Name** |
 | | `retail-contains-pii` | `False` | |
@@ -62,7 +62,7 @@ Instead of creating isolated rules for each table, build **Rule Templates** and 
   * *Template Expression*: `NOT REGEXP_CONTAINS(${data()}, r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')`
 
 ### B. AI-Generated Data Quality Rules
-Leverage Dataplex's generative AI to automatically suggest rules based on table context. For instance, scanning the `customers` table might prompt the AI to suggest bounds for the `loyalty_score` (e.g., between 0 and 1000).
+Leverage Dataplex's generative AI to automatically suggest rules based on table context. For instance, scanning the `customers` table might prompt the AI to suggest bounds for the `customer_segment` (e.g., standardizing tier strings).
 
 ---
 
