@@ -54,14 +54,16 @@ def setup_aspect_types(token):
     owner_fields = [
         {
             "name": "owner_email",
-            "type": "string",
+            "type": "STRING",
+            "index": 1,
             "annotations": {
                 "description": "Email address of the primary data owner/steward"
             }
         },
         {
             "name": "department",
-            "type": "string",
+            "type": "STRING",
+            "index": 2,
             "annotations": {
                 "description": "Department responsible for the dataset"
             }
@@ -73,7 +75,8 @@ def setup_aspect_types(token):
     pii_fields = [
         {
             "name": "has_pii",
-            "type": "boolean",
+            "type": "BOOLEAN",
+            "index": 1,
             "annotations": {
                 "description": "Indicates if the dataset contains Personally Identifiable Information"
             }
