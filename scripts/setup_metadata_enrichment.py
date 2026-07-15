@@ -157,37 +157,57 @@ def create_data_quality_scan(token, scan_id, target_table, rules_payload):
         print(f"❌ Failed to create DataQualityScan. Status: {response.status_code}")
         print(response.text)
 
+def create_entry_group(token, group_id, display_name):
+    """Creates a custom Entry Group in Dataplex Catalog."""
+    print(f"\n--- Creating Entry Group: {group_id} ---")
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups?entryGroupId={group_id}"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    payload = {"displayName": display_name, "description": "Group for Acme Retail Data Products"}
+    
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code in [200, 201]:
+        print(f"✅ Entry Group '{group_id}' created successfully.")
+    elif response.status_code == 409:
+        print(f"ℹ️ Entry Group '{group_id}' already exists.")
+    else:
+        print(f"❌ Failed to create Entry Group. Status: {response.status_code}")
+        print(response.text)
+
 def create_data_product(token, product_id):
     """Creates a Data Product using Dataplex Catalog."""
     print(f"\n--- Creating Data Product: {product_id} ---")
     
-    # In Dataplex v1, Data Products are often represented as custom entries in an EntryGroup
+    # Ensure the Entry Group exists first
+    create_entry_group(token, "retail-products", "Retail Data Products")
+    
+    # Create the Data Product Entry
+    url = f"https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}"
+    
     payload = {
-        "entryType": "projects/global/locations/global/entryTypes/dataProduct",
-        "name": f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries/{product_id}",
+        "entryType": "projects/dataplex-types/locations/global/entryTypes/dataProduct",
+        "displayName": "Acme Customer 360 Insights",
+        "description": "Unified 360 view of Customer data, aggregating transactions and loyalty index.",
         "aspects": {
             f"{PROJECT_ID}.{LOCATION}.retail-data-owner": {
                 "aspectType": f"projects/{PROJECT_ID}/locations/{LOCATION}/aspectTypes/retail-data-owner",
                 "data": {
                     "owner_email": "marketing-analytics@acme.com",
-                    "department": "Marketing"
-                }
-            },
-            "global.global.linked_resources": {
-                "aspectType": "projects/global/locations/global/aspectTypes/linked_resources",
-                "data": {
-                    "links": [
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/customers"},
-                        {"resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/orders"}
-                    ]
+                    "department": "Marketing Analytics"
                 }
             }
         }
     }
     
-    print(f"API CALL: POST https://dataplex.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries?entryId={product_id}")
-    print(f"Payload: {json.dumps(payload, indent=2)}")
-    print("✅ [Simulation] Data Product 'Acme Customer 360 Insights' created.")
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    response = requests.post(url, headers=headers, json=payload)
+    
+    if response.status_code in [200, 201]:
+        print(f"✅ Data Product '{product_id}' created successfully in Dataplex Catalog.")
+    elif response.status_code == 409:
+        print(f"ℹ️ Data Product '{product_id}' already exists.")
+    else:
+        print(f"❌ Failed to create Data Product. Status: {response.status_code}")
+        print(response.text)
 
 def main():
     print("=================================================")
