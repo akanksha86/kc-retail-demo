@@ -5,6 +5,7 @@ We have completed the setup of the synthetic retail dataset generation for **Acm
 This walkthrough outlines:
 1. **Phase 1**: Local dataset stats and local BigQuery loading.
 2. **Phase 2**: Step-by-step setup for Apache Iceberg on GCS, Databricks Unity Catalog integration, and BigLake federation.
+3. **Phases 3-7**: Unstructured Data Processing, SaaS Federation, DataHub Sync, Legacy DB Federation, and Vertex AI. (See `LOCAL_WALKTHROUGH.md` for full instructions).
 
 ---
 
@@ -126,4 +127,9 @@ Once the setup is complete, you can query your Databricks-managed Apache Iceberg
 SELECT * FROM `kc-retail-demo`.acme_catalog_fed.raw_data.inventory LIMIT 10;
 ```
 *(Ensure the BigQuery query is run in the same location as your federated catalog setup.)*
+
+---
+
+## Next Steps: Advanced Integrations
+For instructions on setting up Unstructured Data Profiling, Salesforce Federation, DataHub sync, PostgreSQL federation, and Vertex AI integration, please refer to the `LOCAL_WALKTHROUGH.md` file in this repository.
 

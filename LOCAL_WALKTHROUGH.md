@@ -148,3 +148,62 @@ WHERE store_id = 'store_999';
 ```
 
 *(Note: The BigLake service account requires the `roles/storage.objectAdmin` or `roles/storage.objectUser` role on your GCS bucket to perform writes, which is configured in the federation setup script).*
+
+## Phase 4: Zero-Copy SaaS Federation (Salesforce)
+
+To demonstrate how the Knowledge Catalog integrates CRM data directly alongside your unstructured AI insights and multi-cloud Iceberg catalogs, we simulate a zero-copy federation with Salesforce.
+
+In a production environment, this is achieved natively via **Salesforce Data Cloud's direct BigQuery integration** or **BigQuery Omni**, which projects Salesforce CRM data into BigQuery without ETL pipelines. 
+
+Because we lack a live Salesforce Data Cloud environment, we simulate this federation by generating a synthetic `salesforce_service_cases.csv` and creating a BigQuery External Table over it in Google Cloud Storage.
+
+### Setup Instructions
+Run the setup script to generate the synthetic data, upload it to GCS, and create the federated table:
+```bash
+./scripts/setup_salesforce_federation.sh
+```
+
+Once completed, you can query the CRM data seamlessly in BigQuery alongside your other tables:
+```sql
+SELECT * FROM `kc-retail-demo.raw_retail_data_euw1.salesforce_service_cases` LIMIT 10;
+```
+
+## Phase 5: Third-Party Catalog Synchronization (DataHub)
+
+While Dataplex natively crawls GCP resources, many enterprises use tools like DataHub to capture metadata from on-premise databases (Postgres, Oracle) and transformation tools (dbt, Airflow). 
+
+To bring this external metadata into Knowledge Catalog, DataHub Cloud provides a native **Knowledge Catalog Metadata Sync** automation. This automation natively maps DataHub Tags, Glossary Terms, and Structured Properties directly into **Dataplex Custom Aspects** and **Business Glossary Terms**.
+
+### Setup Instructions
+Because we don't have a live DataHub Cloud instance, we simulate this native automation using a mock JSON export (`data/datahub_export.json`) that contains upstream lineage and data quality tiers.
+
+Run the simulation script to see how this metadata is mapped and applied to our BigQuery Dataplex Entries:
+```bash
+python3 scripts/simulate_datahub_sync.py
+```
+This script demonstrates the `google-cloud-dataplex` API calls required to attach these Custom Aspects, uniting the enterprise graph.
+
+## Phase 6: Managed Connectivity for Legacy Databases (PostgreSQL)
+
+To simulate federating data from a legacy operational database (e.g., an on-premise PostgreSQL instance connected via Datastream or Cloud SQL federation), we have generated a synthetic `suppliers` dataset.
+
+Instead of writing a complex ETL pipeline, we mount this dataset as an external table in BigQuery, simulating the zero-copy and continuous replication features of GCP's managed connectivity.
+
+### Setup Instructions
+Run the setup script to upload the suppliers data and configure the BigQuery external table:
+```bash
+./scripts/setup_postgres_federation.sh
+```
+This federated database table can now be governed, profiled, and joined seamlessly with our Lakehouse tables.
+
+## Phase 7: Vertex AI Integration (Native Cataloging)
+
+Knowledge Catalog natively discovers and catalogs machine learning assets from the Vertex AI Model Registry. To demonstrate this, we can train a real BigQuery ML model that automatically registers itself into Vertex AI.
+
+### Setup Instructions
+We will train a **K-Means Customer Segmentation** model in BigQuery using our synthetic customer, order, and transaction data.
+Run the training script:
+```bash
+./scripts/train_vertex_ai_model.sh
+```
+Because the script uses the `model_registry='vertex_ai'` option in BigQuery ML, this model instantly appears in the Vertex AI Model Registry and is subsequently cataloged by Dataplex Knowledge Catalog, complete with hyperparameters and evaluation metrics.
