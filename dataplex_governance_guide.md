@@ -10,24 +10,24 @@ This guide outlines the data governance structure, manual metadata mappings, rec
 ### Core Tables
 | BigQuery Table | Custom Aspect Type to Attach | Data to enter in UI | Glossary Terms (Column Level) |
 | :--- | :--- | :--- | :--- |
-| **`customers`** | `data-owner` | `customer-success@acme.com` | `loyalty_score` -> **Customer Loyalty Index** <br> `email` -> **Contact Email Address** |
-| | `contains-pii` | `True` | |
-| **`orders`** | `data-owner` | `sales-ops@acme.com` | `total_amount` -> **Total Order Revenue** |
-| | `contains-pii` | `True` | |
-| **`products`** | `data-owner` | `merchandising@acme.com` | `unit_price` -> **Standard Unit Price** <br> `sku` -> **Stock Keeping Unit (SKU)** |
-| | `contains-pii` | `False` | |
-| **`inventory`** | `data-owner` | `supply-chain@acme.com` | `stock_quantity` -> **Current Stock Level** <br> `last_updated` -> **Inventory Snapshot Time** |
-| | `contains-pii` | `False` | |
-| **`stores`** | `data-owner` | `retail-ops@acme.com` | `store_name` -> **Retail Branch Name** |
-| | `contains-pii` | `False` | |
+| **`customers`** | `retail-data-owner` | `customer-success@acme.com` | `loyalty_score` -> **Customer Loyalty Index** <br> `email` -> **Contact Email Address** |
+| | `retail-contains-pii` | `True` | |
+| **`orders`** | `retail-data-owner` | `sales-ops@acme.com` | `total_amount` -> **Total Order Revenue** |
+| | `retail-contains-pii` | `True` | |
+| **`products`** | `retail-data-owner` | `merchandising@acme.com` | `unit_price` -> **Standard Unit Price** <br> `sku` -> **Stock Keeping Unit (SKU)** |
+| | `retail-contains-pii` | `False` | |
+| **`inventory`** | `retail-data-owner` | `supply-chain@acme.com` | `stock_quantity` -> **Current Stock Level** <br> `last_updated` -> **Inventory Snapshot Time** |
+| | `retail-contains-pii` | `False` | |
+| **`stores`** | `retail-data-owner` | `retail-ops@acme.com` | `store_name` -> **Retail Branch Name** |
+| | `retail-contains-pii` | `False` | |
 
 ### Aggregated / Unified Views
 | BigQuery Table | Custom Aspect Type to Attach | Data to enter in UI | Glossary Terms (Column Level) |
 | :--- | :--- | :--- | :--- |
-| **`customer_360_view`** | `data-owner` | `marketing-analytics@acme.com` | Inherits from underlying columns |
-| | `contains-pii` | `True` | |
-| **`real_time_inventory_view`** | `data-owner` | `supply-chain@acme.com` | Inherits from underlying columns |
-| | `contains-pii` | `False` | |
+| **`customer_360_view`** | `retail-data-owner` | `marketing-analytics@acme.com` | Inherits from underlying columns |
+| | `retail-contains-pii` | `True` | |
+| **`real_time_inventory_view`** | `retail-data-owner` | `supply-chain@acme.com` | Inherits from underlying columns |
+| | `retail-contains-pii` | `False` | |
 
 ---
 
