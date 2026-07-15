@@ -96,7 +96,7 @@ def attach_aspect_to_entry(token, entry_name, aspect_type, aspect_payload):
     
     payload = {
         "aspects": {
-            aspect_type: {
+            f"{PROJECT_ID}.{LOCATION}.{aspect_type}": {
                 "aspectType": f"projects/{PROJECT_ID}/locations/{LOCATION}/aspectTypes/{aspect_type}",
                 "data": aspect_payload
             }
@@ -116,8 +116,8 @@ def attach_aspect_to_entry(token, entry_name, aspect_type, aspect_payload):
         print(f"❌ Failed to attach aspect. Status: {response.status_code}")
         print(response.text)
 
-def simulate_create_data_quality_scan(token, scan_id, target_table):
-    """Simulates creating a Dataplex DataQualityScan for Retail."""
+def create_data_quality_scan(token, scan_id, target_table, rules_payload):
+    """Creates a Dataplex DataQualityScan for Retail."""
     print(f"\n--- Creating Data Quality Scan: {scan_id} ---")
     
     payload = {
@@ -126,24 +126,7 @@ def simulate_create_data_quality_scan(token, scan_id, target_table):
             "resource": f"//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/raw_retail_data_euw1/tables/{target_table}"
         },
         "dataQualitySpec": {
-            "rules": [
-                {
-                    "column": "stock_quantity",
-                    "dimension": "VALIDITY",
-                    "rowConditionExpectation": {
-                        "sqlExpression": "stock_quantity >= 0"
-                    },
-                    "description": "Current Stock Level must be non-negative"
-                },
-                {
-                    "column": "unit_price",
-                    "dimension": "VALIDITY",
-                    "rowConditionExpectation": {
-                        "sqlExpression": "unit_price > 0"
-                    },
-                    "description": "Standard Unit Price must be strictly positive"
-                }
-            ]
+            "rules": rules_payload
         }
     }
     
@@ -162,8 +145,8 @@ def simulate_create_data_quality_scan(token, scan_id, target_table):
         print(f"❌ Failed to create DataQualityScan. Status: {response.status_code}")
         print(response.text)
 
-def simulate_create_data_product(token, product_id):
-    """Simulates creating a Data Product using Dataplex Catalog."""
+def create_data_product(token, product_id):
+    """Creates a Data Product using Dataplex Catalog."""
     print(f"\n--- Creating Data Product: {product_id} ---")
     
     # In Dataplex v1, Data Products are often represented as custom entries in an EntryGroup
@@ -171,14 +154,14 @@ def simulate_create_data_product(token, product_id):
         "entryType": "projects/global/locations/global/entryTypes/dataProduct",
         "name": f"projects/{PROJECT_ID}/locations/{LOCATION}/entryGroups/retail-products/entries/{product_id}",
         "aspects": {
-            "retail-data-owner": {
+            f"{PROJECT_ID}.{LOCATION}.retail-data-owner": {
                 "aspectType": f"projects/{PROJECT_ID}/locations/{LOCATION}/aspectTypes/retail-data-owner",
                 "data": {
                     "owner_email": "marketing-analytics@acme.com",
                     "department": "Marketing"
                 }
             },
-            "linked_resources": {
+            "global.global.linked_resources": {
                 "aspectType": "projects/global/locations/global/aspectTypes/linked_resources",
                 "data": {
                     "links": [
@@ -230,11 +213,32 @@ def main():
     )
     
     # 3. Create Data Quality Scan
-    simulate_create_data_quality_scan(token, "inventory-dq-scan", "inventory")
-    simulate_create_data_quality_scan(token, "products-dq-scan", "products")
+    inventory_rules = [
+        {
+            "column": "stock_level",
+            "dimension": "VALIDITY",
+            "rowConditionExpectation": {
+                "sqlExpression": "stock_level >= 0"
+            },
+            "description": "Current Stock Level must be non-negative"
+        }
+    ]
+    create_data_quality_scan(token, "inventory-dq-scan", "inventory", inventory_rules)
+    
+    products_rules = [
+        {
+            "column": "unit_price",
+            "dimension": "VALIDITY",
+            "rowConditionExpectation": {
+                "sqlExpression": "unit_price > 0"
+            },
+            "description": "Standard Unit Price must be strictly positive"
+        }
+    ]
+    create_data_quality_scan(token, "products-dq-scan", "products", products_rules)
     
     # 4. Create Data Product
-    simulate_create_data_product(token, "acme_customer_360_insights")
+    create_data_product(token, "acme_customer_360_insights")
     
     print("\n=================================================")
     print("Metadata Enrichment Scripts Completed.")
